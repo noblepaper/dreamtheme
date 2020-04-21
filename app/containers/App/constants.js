@@ -8,3 +8,12 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
+
+export const SET_USER = 'app/Login/SET_USER';
+export const UNSET_USER = 'app/Login/UNSET_USER';
+export const LOGIN_USER_ERROR = 'app/Login/LOGIN_USER_ERROR';
+export const LOGIN_USER_WITH_GOOGLE = 'app/Login/LOGIN_USER_WITH_GOOGLE';
+export const LOGIN_USER_WITH_EMAIL = 'app/Login/LOGIN_USER_WITH_EMAIL';
+export const LOGIN_USER_WITH_GITHUB = 'app/Login/LOGIN_USER_WITH_GITHUB';
+export const REGISTER_NEW_USER = 'app/Login/REGISTER_NEW_USER';
+export const LOGOUT_USER = 'app/Login/LOGOUT_USER';
