@@ -10,6 +10,9 @@ const sizes = {
   constrains: {
     desktop: 1440,
   },
+  misc: {
+    authIconWidth: 43,
+  },
 };
 
 export default sizes;
