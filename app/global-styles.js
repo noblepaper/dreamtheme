@@ -21,6 +21,11 @@ const GlobalStyle = createGlobalStyle`
     min-width: 100%;
   }
 
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Lexend Giga', sans-serif;
   }
@@ -32,7 +37,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button {
-    outline: none;
     border: none;
     background-color: unset;
     cursor: pointer;

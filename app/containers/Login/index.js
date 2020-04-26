@@ -26,6 +26,7 @@ const Wrapper = styled.div`
 
 export function Login({ loginWithGoogle, saveUser }) {
   const useMountEffect = () =>
+    // set listener on auth state
     useEffect(() => {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {

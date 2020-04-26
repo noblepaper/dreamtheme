@@ -2,6 +2,7 @@
 const sizes = {
   mediumMaxWidth: 1024,
   smallMaxWidth: 768,
+  xSmallMaxWidth: 345,
   smallMaxHeight: 800,
   gutter: {
     large: 80,

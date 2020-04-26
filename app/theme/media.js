@@ -17,6 +17,11 @@ const media = {
       ${css(...args)}
     }
   `,
+  xSmall: (...args) => css`
+    @media (max-width: ${sizes.xSmallMaxWidth}px) {
+      ${css(...args)}
+    }
+  `,
   notSmall: (...args) => css`
     @media (min-width: ${sizes.smallMaxWidth + 1}px) {
       ${css(...args)}

@@ -35,7 +35,8 @@ export default function App() {
     <Wrapper>
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/user" component={Login} />
+        <Route exact path="/user/:slug" component={Login} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

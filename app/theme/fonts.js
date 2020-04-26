@@ -5,6 +5,10 @@ const fonts = {
     regular: () => css`
       font-family: 'Quicksand', sans-serif;
     `,
+    light: () => css`
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 300;
+    `,
   },
   headline: {
     regular: () => css`
