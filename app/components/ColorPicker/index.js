@@ -8,9 +8,19 @@ import React, { useRef, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+const PageWrapper = styled.div`
+  padding: 75px;
+`;
+
+const PickerWrapper = styled.div`
+  height: 350px;
+  width: 400px;
+  position: relative;
+  display: inline-block;
+`;
+
 const Canvas = styled.canvas`
-  margin: 50px;
-  border-radius: 10px;
+  border-radius: 4px;
   border: 1px solid #e4e4e4;
   display: inline-block;
 `;
@@ -22,6 +32,21 @@ const CurrentColor = styled.div`
   border-radius: 75px;
   background-color: ${props => props.fill};
   transition: background-color 0.25s ease;
+  margin: 75px;
+`;
+
+const Eyeglass = styled.div`
+  height: 16px;
+  width: 16px;
+  border-radius: 65px;
+  border: 1px solid white;
+  background-color: ${props => props.fill};
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 4px 0 rgba(118, 117, 117, 0.14);
+  transform: translate(${props => props.x}px, ${props => props.y}px);
+  transition: background-color 0.25s ease, transform 0.15s ease;
 `;
 
 let context = null;
@@ -32,7 +57,11 @@ function ColorPicker() {
 
   // state
   const [hue, setHue] = useState('#BAD577');
-  const [currentColor, setCurrentColor] = useState(hue);
+  const [{ color, x, y }, pickNewColor] = useState({
+    color: hue,
+    x: 0,
+    y: 0,
+  });
 
   // lifecycle
   const useMountEffect = () =>
@@ -62,19 +91,28 @@ function ColorPicker() {
   const pickAColor = event => {
     event.persist();
     const { left, top } = canvasRef.current.getBoundingClientRect();
-    const x = event.pageX - left;
-    const y = event.pageY - top;
-    const colorData = context.getImageData(x, y, 1, 1).data;
+    const canvasX = event.pageX - left;
+    const canvasY = event.pageY - top;
+    const colorData = context.getImageData(canvasX, canvasY, 1, 1).data;
     const [r, g, b, a] = colorData;
-    const newColor = `rgba(${r}, ${g}, ${b}, ${a})`;
-    setCurrentColor(newColor);
+
+    const newColor = {
+      color: `rgba(${r}, ${g}, ${b}, ${a})`,
+      x: canvasX,
+      y: canvasY,
+    };
+
+    pickNewColor(newColor);
   };
 
   return (
-    <>
-      <Canvas width="400" height="350" ref={canvasRef} onClick={pickAColor} />
-      <CurrentColor fill={currentColor} />
-    </>
+    <PageWrapper>
+      <PickerWrapper>
+        <Canvas width="400" height="350" ref={canvasRef} onClick={pickAColor} />
+        <Eyeglass fill={color} x={x - 8} y={y - 8} />
+      </PickerWrapper>
+      <CurrentColor fill={color} />
+    </PageWrapper>
   );
 }
 
