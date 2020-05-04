@@ -16,6 +16,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Login from 'containers/Login';
+import ColorPicker from 'components/ColorPicker';
 
 import GlobalStyle from '../../global-styles';
 import saga from './saga';
@@ -35,6 +36,7 @@ export default function App() {
     <Wrapper>
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route exact path="/color-picker" component={ColorPicker} />
         <Route exact path="/user" component={Login} />
         <Route exact path="/user/:slug" component={Login} />
         <Route component={NotFoundPage} />
