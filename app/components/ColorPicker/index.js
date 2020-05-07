@@ -7,6 +7,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Color from 'color';
 import _ from 'lodash';
 
 const PageWrapper = styled.div`
@@ -34,7 +35,6 @@ const CurrentColor = styled.div`
   height: 75px;
   width: 75px;
   border-radius: 75px;
-  background-color: ${props => props.fill};
   transition: background-color 0.25s ease;
   margin: 75px;
 `;
@@ -44,7 +44,6 @@ const Eyeglass = styled.div`
   width: 16px;
   border-radius: 65px;
   border: 1px solid white;
-  background-color: ${props => props.fill};
   position: absolute;
   top: 0;
   left: 0;
@@ -64,7 +63,24 @@ function ColorPicker() {
   const [hue, setHue] = useState('#BAD577');
 
   // methods
-  const pickAColor = event => {
+  const setNewColor = (position, color = undefined) => {
+    const { x, y } = position;
+    let backgroundColor = color;
+
+    if (!backgroundColor) {
+      const colorData = context.getImageData(x, y, 1, 1).data;
+      const [r, g, b] = colorData;
+      backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    const transform = `translate(${x - 8}px, ${y - 8}px)`;
+
+    eyeglassRef.current.style.transform = transform;
+    eyeglassRef.current.style.backgroundColor = backgroundColor;
+    currentColorRef.current.style.backgroundColor = backgroundColor;
+  };
+
+  const getCanvasPosition = event => {
     const {
       left,
       top,
@@ -73,26 +89,38 @@ function ColorPicker() {
     } = canvasRef.current.getBoundingClientRect();
     const x = _.clamp(event.pageX - left, 0, width - 1);
     const y = _.clamp(event.pageY - top, 0, height - 1);
-    const colorData = context.getImageData(x, y, 1, 1).data;
-    const [r, g, b] = colorData;
+    setNewColor({ x, y });
+  };
 
-    const backgroundColor = `rgb(${r}, ${g}, ${b})`;
-    const transform = `translate(${x - 8}px, ${y - 8}px)`;
-    console.log(backgroundColor)
+  const findColorPosition = color => {
+    console.time('findColor');
+    const { width, height } = canvasRef.current;
+    const colorValues = Color(color)
+      .rgb()
+      .array();
+    const imageData = _.chunk(
+      context.getImageData(0, 0, width, height).data,
+      4,
+    );
+    const positionIndex = _.findIndex(imageData, colorData => {
+      const currentValues = [colorData[0], colorData[1], colorData[2]];
+      return _.isEqual(colorValues, currentValues);
+    });
 
-    eyeglassRef.current.style.transform = transform;
-    eyeglassRef.current.style.backgroundColor = backgroundColor;
-    currentColorRef.current.style.backgroundColor = backgroundColor;
+    const x = ((positionIndex * 4) / 4) % width;
+    const y = (positionIndex * 4) / width / 4;
+    setNewColor({ x, y }, color);
+    console.timeEnd('findColor');
   };
 
   // listeners
   const onMousemove = event => {
-    pickAColor(event);
+    getCanvasPosition(event);
   };
 
   const onMousedown = event => {
     event.persist();
-    pickAColor(event);
+    getCanvasPosition(event);
     window.addEventListener('mousemove', onMousemove);
     window.addEventListener('mouseup', onMouseup);
   };
@@ -122,6 +150,7 @@ function ColorPicker() {
     // TODO: move greyscale to its own component bc it doesn't need to change
     const greyscaleGradient = context.createLinearGradient(0, 400, 0, 0);
     greyscaleGradient.addColorStop(1, 'rgba(0,0,0,0)');
+    // don't go all the way to 0 to make sure bottom is true black
     greyscaleGradient.addColorStop(0.15, 'rgba(0,0,0,1)');
 
     context.clearRect(0, 0, 400, 350);
@@ -129,6 +158,9 @@ function ColorPicker() {
     context.fillRect(0, 0, 400, 350);
     context.fillStyle = greyscaleGradient;
     context.fillRect(0, 0, 400, 350);
+
+    const testColor = 'rgb(94, 103, 71)';
+    findColorPosition(testColor);
   }, [hue]);
 
   return (
