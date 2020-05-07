@@ -63,6 +63,11 @@ function ColorPicker() {
   const [hue, setHue] = useState('#BAD577');
 
   // methods
+  /**
+   * Sets background color(s) and positions eyeglass
+   * @param {object} position { x, y } position required
+   * @param {*} color rgb color string optional - will be created from position if none is provided
+   */
   const setNewColor = (position, color = undefined) => {
     const { x, y } = position;
     let backgroundColor = color;
@@ -80,7 +85,11 @@ function ColorPicker() {
     currentColorRef.current.style.backgroundColor = backgroundColor;
   };
 
-  const getCanvasPosition = event => {
+  /**
+   * Gets the x,y position of the user's click on the canvas
+   * @param {string} event the onclick event
+   */
+  const getMousePosition = event => {
     const {
       left,
       top,
@@ -92,8 +101,12 @@ function ColorPicker() {
     setNewColor({ x, y });
   };
 
+  /**
+   * Find the x,y position on the canvas given a color string
+   * @param {string} color a hex, rgb(a), or hsl color string
+   */
   const findColorPosition = color => {
-    console.time('findColor');
+    // console.time('findColor');
     const { width, height } = canvasRef.current;
     const colorValues = Color(color)
       .rgb()
@@ -110,17 +123,17 @@ function ColorPicker() {
     const x = positionIndex % width;
     const y = positionIndex / width;
     setNewColor({ x, y }, color);
-    console.timeEnd('findColor');
+    // console.timeEnd('findColor');
   };
 
   // listeners
   const onMousemove = event => {
-    getCanvasPosition(event);
+    getMousePosition(event);
   };
 
   const onMousedown = event => {
     event.persist();
-    getCanvasPosition(event);
+    getMousePosition(event);
     window.addEventListener('mousemove', onMousemove);
     window.addEventListener('mouseup', onMouseup);
   };
