@@ -107,8 +107,8 @@ function ColorPicker() {
       return _.isEqual(colorValues, currentValues);
     });
 
-    const x = ((positionIndex * 4) / 4) % width;
-    const y = (positionIndex * 4) / width / 4;
+    const x = positionIndex % width;
+    const y = positionIndex / width;
     setNewColor({ x, y }, color);
     console.timeEnd('findColor');
   };
