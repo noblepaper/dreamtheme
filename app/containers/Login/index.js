@@ -12,7 +12,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { doLoginWithUserGoogle, doSetUser } from 'containers/App/actions';
-import firebase from 'utils/firebase';
+import { auth } from 'utils/firebase';
 
 import LoginForm from 'components/LoginForm';
 
@@ -28,7 +28,7 @@ export function Login({ loginWithGoogle, saveUser }) {
   const useMountEffect = () =>
     // set listener on auth state
     useEffect(() => {
-      firebase.auth().onAuthStateChanged(user => {
+      auth().onAuthStateChanged(user => {
         if (user) {
           // User is signed in.
           saveUser(user);
