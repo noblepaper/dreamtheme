@@ -1,16 +1,5 @@
 import * as firebase from 'firebase';
 
-// const {
-//   API_KEY,
-//   AUTH_DOMAIN,
-//   DB_URL,
-//   PROJECT_ID,
-//   STORAGE_BUCKET,
-//   MESSAGING_SENDER_ID,
-//   APP_ID,
-//   MEASUREMENT_ID,
-// } = process.env;
-
 const config = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,

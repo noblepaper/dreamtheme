@@ -16,7 +16,7 @@ import {
 export function* loginUserWithGoogle() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
-    yield call(() =>
+    const loggedInUser = yield call(() =>
       firebase
         .auth()
         .signInWithPopup(provider)
@@ -28,7 +28,7 @@ export function* loginUserWithGoogle() {
         })
         .catch(error => error),
     );
-    // yield put(doSetUser(payload));
+    yield put(doSetUser(loggedInUser));
   } catch (err) {
     yield put(doLoginUserError(err));
   }

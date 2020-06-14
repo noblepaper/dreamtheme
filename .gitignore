@@ -4,6 +4,9 @@ build
 node_modules
 stats.json
 
+# VS code settings
+settings.json
+
 # Cruft
 .DS_Store
 npm-debug.log
